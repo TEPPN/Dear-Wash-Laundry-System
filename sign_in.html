@@ -6,6 +6,14 @@
     <title>Sign-in</title>
 </head>
 <body>
-    
+    <form action="sign_in.php" method='POST'>
+        <h3>Sign-in</h3>
+        <label for="user">Username or email: </label> <br>
+        <input type="text" name="user" required><br>
+        <label for="password">Password: </label> <br>
+        <input type="password" name="password" required><br>
+        <button type="submit" id="sign_in">Sign-in</button>
+    </form>
+    <p>Doesn't have an account yet? <b><a href="sign_up.html">Sign-up</a></b></p>
 </body>
 </html>
