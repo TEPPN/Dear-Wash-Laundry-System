@@ -1,12 +1,12 @@
 <?php
     session_start();
-    require_once "connect.php";
+    require_once "../../connect/connect.php";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = trim($_POST["user"]);
         $password = $_POST["password"];
 
-        $query = "SELECT id, name, email, password FROM account WHERE email = ? OR name = ?";
+        $query = "SELECT user_id, user_name, user_email, user_password FROM user WHERE user_email = ? OR user_name = ?";
         $stmt = $conn->prepare($query);
 
         if (!$stmt) {
@@ -26,7 +26,7 @@
             $_SESSION["user_id"] = $id;
             $_SESSION["user_name"] = $name;
             $_SESSION["user_email"] = $email;
-            header("Location: home.html");
+            header("Location: ../../homepage/home.html");
             exit();
         } else {
             echo "Incorrect password!";
