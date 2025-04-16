@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular Order</title>
+    <style>
+        .order-type {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .item-row {
+            margin-bottom: 10px;
+        }
+        .subtotal {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        #total-price {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        // Pricing dictionary
+        const pricing = {
+            'Complete Wash': {
+                'Shirt': 6000,
+                'Pants': 8000,
+                'Jacket': 10000,
+                'Other': 7000
+            },
+            'Dry Cleaning': {
+                'Shirt': 7000,
+                'Pants': 9000,
+                'Jacket': 12000,
+                'Other': 8000
+            },
+            'Ironing': {
+                'Shirt': 4000,
+                'Pants': 5000,
+                'Jacket': 6000,
+                'Other': 4500
+            },
+            'Other': {
+                'Shirt': 5000,
+                'Pants': 6000,
+                'Jacket': 8000,
+                'Other': 5000
+            }
+        };
+
+        let orderTypeCounter = 0;
+
+        function addOrderType() {
+            let container = document.getElementById("order-container");
+            let div = document.createElement("div");
+            div.className = "order-type";
+            const orderIndex = orderTypeCounter++;
+
+            div.innerHTML = `
+                <h4>Order Type</h4>
+                <select name="order_types[]" required onchange="updatePrices(${orderIndex})">
+                    <option value="Complete Wash">Complete Wash</option>
+                    <option value="Dry Cleaning">Dry Cleaning</option>
+                    <option value="Ironing">Ironing</option>
+                    <option value="Other">Other</option>
+                </select>
+                <button type="button" onclick="addItem(this, ${orderIndex})">Add Item</button>
+                <div class="items-container" id="items-container-${orderIndex}"></div>
+                <div class="subtotal" id="subtotal-${orderIndex}">Subtotal: Rp 0</div>
+                <button type="button" onclick="removeOrderType(this)" class="remove-btn">Remove Order Type</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addItem(button, orderIndex) {
+            let container = document.getElementById(`items-container-${orderIndex}`);
+            let itemIndex = container.children.length;
+            let div = document.createElement("div");
+            div.className = "item-row";
+            
+            // Get current order type
+            let orderTypeSelect = button.previousElementSibling;
+            let orderType = orderTypeSelect.value;
+            
+            div.innerHTML = `
+                <select name="items[${orderIndex}][]" required onchange="updateItemPrice(this, ${orderIndex}, ${itemIndex})">
+                    <option value="Shirt">Shirt</option>
+                    <option value="Pants">Pants</option>
+                    <option value="Jacket">Jacket</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="number" name="quantities[${orderIndex}][]" placeholder="Quantity" required value="1" min="1" 
+                       onchange="updateItemPrice(this.previousElementSibling, ${orderIndex}, ${itemIndex})">
+                <span class="item-price" id="price-${orderIndex}-${itemIndex}">Rp ${pricing[orderType]['Shirt'].toLocaleString('id')}</span>
+                <button type="button" onclick="removeItem(this, ${orderIndex})">Remove</button>
+            `;
+            container.appendChild(div);
+            updatePrices(orderIndex);
+        }
+
+        function removeItem(button, orderIndex) {
+            button.parentElement.remove();
+            updatePrices(orderIndex);
+        }
+        
+        function removeOrderType(button) {
+            button.parentElement.remove();
+            updateTotalPrice();
+        }
+
+        function updateItemPrice(itemSelect, orderIndex, itemIndex) {
+            let orderTypeSelect = document.querySelector(`select[name="order_types[]"]:nth-of-type(${orderIndex + 1})`);
+            let orderType = document.querySelector(`.order-type:nth-of-type(${orderIndex + 1}) select[name="order_types[]"]`).value;
+            let item = itemSelect.value;
+            let quantityInput = itemSelect.nextElementSibling;
+            let quantity = parseInt(quantityInput.value) || 1;
+            
+            let pricePerItem = pricing[orderType][item];
+            let totalItemPrice = pricePerItem * quantity;
+            
+            let priceSpan = document.getElementById(`price-${orderIndex}-${itemIndex}`);
+            if (priceSpan) {
+                priceSpan.textContent = `Rp ${totalItemPrice.toLocaleString('id')}`;
+            }
+            
+            updatePrices(orderIndex);
+        }
+
+        function updatePrices(orderIndex) {
+            let orderType = document.querySelector(`.order-type:nth-of-type(${orderIndex + 1}) select[name="order_types[]"]`).value;
+            let itemsContainer = document.getElementById(`items-container-${orderIndex}`);
+            let subtotalElement = document.getElementById(`subtotal-${orderIndex}`);
+            
+            let subtotal = 0;
+            
+            // Loop through all items in this order type
+            let itemRows = itemsContainer.querySelectorAll('.item-row');
+            itemRows.forEach((row, idx) => {
+                let itemSelect = row.querySelector('select');
+                let quantityInput = row.querySelector('input[type="number"]');
+                let item = itemSelect.value;
+                let quantity = parseInt(quantityInput.value) || 1;
+                
+                let pricePerItem = pricing[orderType][item];
+                subtotal += pricePerItem * quantity;
+                
+                // Update price display
+                let priceSpan = document.getElementById(`price-${orderIndex}-${idx}`);
+                if (priceSpan) {
+                    priceSpan.textContent = `Rp ${(pricePerItem * quantity).toLocaleString('id')}`;
+                }
+            });
+            
+            subtotalElement.textContent = `Subtotal: Rp ${subtotal.toLocaleString('id')}`;
+            
+            updateTotalPrice();
+        }
+        
+        function updateTotalPrice() {
+            let totalPrice = 0;
+            let subtotals = document.querySelectorAll('.subtotal');
+            
+            subtotals.forEach(subtotal => {
+                let priceText = subtotal.textContent.replace('Subtotal: Rp ', '').replace(/\./g, '');
+                totalPrice += parseInt(priceText) || 0;
+            });
+            
+            let totalElement = document.getElementById('total-price');
+            totalElement.textContent = `Total Price: Rp ${totalPrice.toLocaleString('id')}`;
+        }
+    </script>
+</head>
+<body>
+    <h2>Regular Order</h2>
+    <form action="regular_admin.php" method="POST">
+        <label>Customer Name:</label>
+        <input type="text" name="customer_name" required>
+        <br>
+
+        <h3>Order Details</h3>
+        <div id="order-container"></div>
+        <button type="button" onclick="addOrderType()">Add Order Type</button>
+        <br>
+        
+        <div id="total-price">Total Price: Rp 0</div>
+        
+        <button type="submit">Submit Order</button>
+    </form>
+    
+    <script>
+        // Add first order type by default
+        document.addEventListener('DOMContentLoaded', function() {
+            addOrderType();
+        });
+    </script>
+</body>
+</html>
