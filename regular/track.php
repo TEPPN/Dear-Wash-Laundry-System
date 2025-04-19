@@ -123,6 +123,7 @@ if ($result && $result->num_rows > 0) {
             margin-bottom: 10px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12);
             cursor: pointer;
+            position: relative;
         }
         .card-title {
             font-weight: bold;
@@ -156,28 +157,101 @@ if ($result && $result->num_rows > 0) {
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
-        .hidden {
+        
+        /* New Floating Window Styles */
+        .modal-overlay {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
         }
-        .order-details {
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 14px;
+        
+        .order-modal {
+            display: none;
+            position: absolute;
+            background-color: white;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 101;
+            padding: 20px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .close-modal {
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+        }
+        
         .service-type {
             font-weight: bold;
             margin-top: 10px;
         }
+        
         .service-items {
             margin-left: 15px;
+            margin-bottom: 10px;
         }
+        
         .total-price {
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px;
             text-align: right;
+            font-size: 16px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        /* Navigation Styles */
+        .nav-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav-tab {
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        
+        .nav-tab.active {
+            background-color: #0079bf;
+            color: white;
+            border-color: #0079bf;
         }
     </style>
 </head>
@@ -195,43 +269,19 @@ if ($result && $result->num_rows > 0) {
             </div>
         </div>
 
+        <div class="nav-tabs">
+            <div class="nav-tab" onclick="location.href='index.php'">Home</div>
+            <div class="nav-tab active">Progress</div>
+            <div class="nav-tab" onclick="location.href='create_order.php'">Create an Order</div>
+        </div>
+
         <div class="board">
             <!-- RECEIVED COLUMN -->
             <div class="column received">
                 <div class="column-header">RECEIVED (<?php echo count($received_orders); ?>)</div>
                 <?php foreach ($received_orders as $order): ?>
-                    <div class="card" onclick="toggleDetails('received-<?php echo $order['order_id']; ?>')">
+                    <div class="card" onclick="showOrderDetails(<?php echo $order['order_id']; ?>, 'RECEIVED')">
                         <div class="card-title">Order #<?php echo $order['order_id']; ?></div>
-                        
-                        <div id="received-<?php echo $order['order_id']; ?>" class="order-details hidden">
-                            <div class="card-detail">Customer: <?php echo $order['customer_name']; ?></div>
-                            <div class="card-detail">Date: <?php echo date('M d, Y', strtotime($order['created_at'] ?? date('Y-m-d'))); ?></div>
-                            
-                            <?php if (isset($order['order_details']['details'])): ?>
-                                <?php foreach ($order['order_details']['details'] as $detail): ?>
-                                    <div class="service-type"><?php echo $detail['type']; ?></div>
-                                    <div class="service-items">
-                                        <?php foreach ($detail['items'] as $item): ?>
-                                            <div><?php echo $item['item']; ?> x <?php echo $item['quantity']; ?> 
-                                                = Rp <?php echo number_format($item['item_total'], 0, ',', '.'); ?></div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                                <div class="total-price">Total: Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></div>
-                            <?php else: ?>
-                                <div class="card-detail">Total: Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></div>
-                            <?php endif; ?>
-                            
-                            <?php if ($is_admin): ?>
-                                <div class="card-actions">
-                                    <form method="post">
-                                        <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                        <input type="hidden" name="status" value="PROGRESS">
-                                        <button type="submit" name="update_status" class="move-button">Move to Progress</button>
-                                    </form>
-                                </div>
-                            <?php endif; ?>
-                        </div>
                     </div>
                 <?php endforeach; ?>
                 <?php if (count($received_orders) == 0): ?>
@@ -245,43 +295,8 @@ if ($result && $result->num_rows > 0) {
             <div class="column progress">
                 <div class="column-header">PROGRESS (<?php echo count($progress_orders); ?>)</div>
                 <?php foreach ($progress_orders as $order): ?>
-                    <div class="card" onclick="toggleDetails('progress-<?php echo $order['order_id']; ?>')">
+                    <div class="card" onclick="showOrderDetails(<?php echo $order['order_id']; ?>, 'PROGRESS')">
                         <div class="card-title">Order #<?php echo $order['order_id']; ?></div>
-                        
-                        <div id="progress-<?php echo $order['order_id']; ?>" class="order-details hidden">
-                            <div class="card-detail">Customer: <?php echo $order['customer_name']; ?></div>
-                            <div class="card-detail">Date: <?php echo date('M d, Y', strtotime($order['created_at'] ?? date('Y-m-d'))); ?></div>
-                            
-                            <?php if (isset($order['order_details']['details'])): ?>
-                                <?php foreach ($order['order_details']['details'] as $detail): ?>
-                                    <div class="service-type"><?php echo $detail['type']; ?></div>
-                                    <div class="service-items">
-                                        <?php foreach ($detail['items'] as $item): ?>
-                                            <div><?php echo $item['item']; ?> x <?php echo $item['quantity']; ?> 
-                                                = Rp <?php echo number_format($item['item_total'], 0, ',', '.'); ?></div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                                <div class="total-price">Total: Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></div>
-                            <?php else: ?>
-                                <div class="card-detail">Total: Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></div>
-                            <?php endif; ?>
-                            
-                            <?php if ($is_admin): ?>
-                                <div class="card-actions">
-                                    <form method="post">
-                                        <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                        <input type="hidden" name="status" value="RECEIVED">
-                                        <button type="submit" name="update_status" class="move-button">Move to Received</button>
-                                    </form>
-                                    <form method="post">
-                                        <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                        <input type="hidden" name="status" value="DONE">
-                                        <button type="submit" name="update_status" class="move-button">Move to Done</button>
-                                    </form>
-                                </div>
-                            <?php endif; ?>
-                        </div>
                     </div>
                 <?php endforeach; ?>
                 <?php if (count($progress_orders) == 0): ?>
@@ -295,38 +310,8 @@ if ($result && $result->num_rows > 0) {
             <div class="column done">
                 <div class="column-header">DONE (<?php echo count($done_orders); ?>)</div>
                 <?php foreach ($done_orders as $order): ?>
-                    <div class="card" onclick="toggleDetails('done-<?php echo $order['order_id']; ?>')">
+                    <div class="card" onclick="showOrderDetails(<?php echo $order['order_id']; ?>, 'DONE')">
                         <div class="card-title">Order #<?php echo $order['order_id']; ?></div>
-                        
-                        <div id="done-<?php echo $order['order_id']; ?>" class="order-details hidden">
-                            <div class="card-detail">Customer: <?php echo $order['customer_name']; ?></div>
-                            <div class="card-detail">Date: <?php echo date('M d, Y', strtotime($order['created_at'] ?? date('Y-m-d'))); ?></div>
-                            
-                            <?php if (isset($order['order_details']['details'])): ?>
-                                <?php foreach ($order['order_details']['details'] as $detail): ?>
-                                    <div class="service-type"><?php echo $detail['type']; ?></div>
-                                    <div class="service-items">
-                                        <?php foreach ($detail['items'] as $item): ?>
-                                            <div><?php echo $item['item']; ?> x <?php echo $item['quantity']; ?> 
-                                                = Rp <?php echo number_format($item['item_total'], 0, ',', '.'); ?></div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                                <div class="total-price">Total: Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></div>
-                            <?php else: ?>
-                                <div class="card-detail">Total: Rp <?php echo number_format($order['total_amount'], 0, ',', '.'); ?></div>
-                            <?php endif; ?>
-                            
-                            <?php if ($is_admin): ?>
-                                <div class="card-actions">
-                                    <form method="post">
-                                        <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                        <input type="hidden" name="status" value="PROGRESS">
-                                        <button type="submit" name="update_status" class="move-button">Move to Progress</button>
-                                    </form>
-                                </div>
-                            <?php endif; ?>
-                        </div>
                     </div>
                 <?php endforeach; ?>
                 <?php if (count($done_orders) == 0): ?>
@@ -336,15 +321,136 @@ if ($result && $result->num_rows > 0) {
                 <?php endif; ?>
             </div>
         </div>
+
+        <!-- Modal Overlay -->
+        <div class="modal-overlay" id="modalOverlay"></div>
+
+        <!-- Modal for Order Details -->
+        <div class="order-modal" id="orderModal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Order Details</div>
+                <span class="close-modal" onclick="closeOrderDetails()">&times;</span>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
     </div>
 
     <script>
-        // Function to toggle order details visibility
-        function toggleDetails(detailId) {
-            const detailElement = document.getElementById(detailId);
-            if (detailElement) {
-                detailElement.classList.toggle('hidden');
+        // Store all orders data in JavaScript
+        const allOrders = {
+            RECEIVED: <?php echo json_encode($received_orders); ?>,
+            PROGRESS: <?php echo json_encode($progress_orders); ?>,
+            DONE: <?php echo json_encode($done_orders); ?>
+        };
+        
+        // Function to show order details in a modal
+        function showOrderDetails(orderId, status) {
+            const orderList = allOrders[status];
+            let order = null;
+            
+            // Find the order with matching ID
+            for (let i = 0; i < orderList.length; i++) {
+                if (orderList[i].order_id == orderId) {
+                    order = orderList[i];
+                    break;
+                }
             }
+            
+            if (!order) return;
+            
+            // Set modal title
+            document.getElementById('modalTitle').textContent = `Order #${order.order_id}`;
+            
+            // Generate content for modal
+            let content = `
+                <div class="card-detail">Customer: ${order.customer_name}</div>
+                <div class="card-detail">Date: ${formatDate(order.created_at)}</div>
+            `;
+            
+            // Add order details if available
+            if (order.order_details && order.order_details.details) {
+                order.order_details.details.forEach(detail => {
+                    content += `<div class="service-type">${detail.type}</div>`;
+                    content += `<div class="service-items">`;
+                    
+                    detail.items.forEach(item => {
+                        content += `<div>${item.item} x ${item.quantity} = Rp ${numberFormat(item.item_total)}</div>`;
+                    });
+                    
+                    content += `</div>`;
+                });
+                
+                content += `<div class="total-price">Total: Rp ${numberFormat(order.total_amount)}</div>`;
+            } else {
+                content += `<div class="card-detail">Total: Rp ${numberFormat(order.total_amount)}</div>`;
+            }
+            
+            // Add action buttons for admin
+            <?php if ($is_admin): ?>
+            content += `<div class="modal-actions">`;
+            
+            if (status === "RECEIVED") {
+                content += `
+                    <form method="post">
+                        <input type="hidden" name="order_id" value="${order.order_id}">
+                        <input type="hidden" name="status" value="PROGRESS">
+                        <button type="submit" name="update_status" class="move-button">Move to Progress</button>
+                    </form>
+                `;
+            } else if (status === "PROGRESS") {
+                content += `
+                    <form method="post">
+                        <input type="hidden" name="order_id" value="${order.order_id}">
+                        <input type="hidden" name="status" value="RECEIVED">
+                        <button type="submit" name="update_status" class="move-button">Move to Received</button>
+                    </form>
+                    <form method="post">
+                        <input type="hidden" name="order_id" value="${order.order_id}">
+                        <input type="hidden" name="status" value="DONE">
+                        <button type="submit" name="update_status" class="move-button">Move to Done</button>
+                    </form>
+                `;
+            } else if (status === "DONE") {
+                content += `
+                    <form method="post">
+                        <input type="hidden" name="order_id" value="${order.order_id}">
+                        <input type="hidden" name="status" value="PROGRESS">
+                        <button type="submit" name="update_status" class="move-button">Move to Progress</button>
+                    </form>
+                `;
+            }
+            
+            content += `</div>`;
+            <?php endif; ?>
+            
+            // Set content and show modal
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('orderModal').style.display = 'block';
+        }
+        
+        // Function to close order details modal
+        function closeOrderDetails() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('orderModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('modalOverlay').addEventListener('click', closeOrderDetails);
+        
+        // Helper function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+        
+        // Helper function to format numbers
+        function numberFormat(number) {
+            return new Intl.NumberFormat('id-ID').format(number);
         }
     </script>
 </body>
