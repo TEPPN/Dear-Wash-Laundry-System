@@ -26,6 +26,7 @@
             $_SESSION["user_id"] = $id;
             $_SESSION["user_name"] = $name;
             $_SESSION["user_email"] = $email;
+            $_SESSION["user_role"] = $role;
             header("Location: ../../homepage/home.html");
             exit();
         } else {
