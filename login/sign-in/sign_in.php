@@ -33,7 +33,7 @@
             $_SESSION["user_created"] = $user_created;
             $_SESSION["order_count"] = $order_count;
             $_SESSION["user_coupon"] = $user_coupon;
-            header("Location: ../../profile/profile.html");
+            header("Location: ../../profile/profile.php");
             exit();
         } else {
             echo "Incorrect password!";
