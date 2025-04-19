@@ -6,7 +6,9 @@
         $user = trim($_POST["user"]);
         $password = $_POST["password"];
 
-        $query = "SELECT user_id, user_name, user_email, user_password, user_role, user_created, order_count FROM user WHERE user_email = ? OR user_name = ?";
+        $query = "SELECT user_id, user_name, user_email, user_password, 
+                         user_role, user_created, order_count, user_coupon 
+                         FROM user WHERE user_email = ? OR user_name = ?";
         $stmt = $conn->prepare($query);
 
         if (!$stmt) {
@@ -18,7 +20,8 @@
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-        $stmt->bind_result($user_id, $user_name, $user_email, $hashed_password, $user_role, $user_created, $order_count);
+        $stmt->bind_result($user_id, $user_name, $user_email, $hashed_password, 
+                           $user_role, $user_created, $order_count, $user_coupon);
         $stmt->fetch();
 
         if (password_verify($password, $hashed_password)) {
@@ -29,7 +32,8 @@
             $_SESSION["user_role"] = $user_role;
             $_SESSION["user_created"] = $user_created;
             $_SESSION["order_count"] = $order_count;
-            header("Location: ../../homepage/home.html");
+            $_SESSION["user_coupon"] = $user_coupon;
+            header("Location: ../../profile/profile.html");
             exit();
         } else {
             echo "Incorrect password!";
