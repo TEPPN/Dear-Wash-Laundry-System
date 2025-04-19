@@ -6,7 +6,7 @@
         $user = trim($_POST["user"]);
         $password = $_POST["password"];
 
-        $query = "SELECT user_id, user_name, user_email, user_password FROM user WHERE user_email = ? OR user_name = ?";
+        $query = "SELECT user_id, user_name, user_email, user_password, user_role, user_created, order_count FROM user WHERE user_email = ? OR user_name = ?";
         $stmt = $conn->prepare($query);
 
         if (!$stmt) {
@@ -18,15 +18,17 @@
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-        $stmt->bind_result($id, $name, $email, $hashed_password);
+        $stmt->bind_result($user_id, $user_name, $user_email, $hashed_password, $user_role, $user_created, $order_count);
         $stmt->fetch();
 
         if (password_verify($password, $hashed_password)) {
 
-            $_SESSION["user_id"] = $id;
-            $_SESSION["user_name"] = $name;
-            $_SESSION["user_email"] = $email;
-            $_SESSION["user_role"] = $role;
+            $_SESSION["user_id"] = $user_id;
+            $_SESSION["user_name"] = $user_name;
+            $_SESSION["user_email"] = $user_email;
+            $_SESSION["user_role"] = $user_role;
+            $_SESSION["user_created"] = $user_created;
+            $_SESSION["order_count"] = $order_count;
             header("Location: ../../homepage/home.html");
             exit();
         } else {
