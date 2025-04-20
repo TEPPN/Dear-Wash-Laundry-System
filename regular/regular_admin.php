@@ -79,8 +79,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $quantity = isset($quantities[$i][$j]) ? (int)$quantities[$i][$j] : 0;
                     
                     // Calculate price
-                    $price_per_item = isset($pricing[$order_type][$item]) ? $pricing[$order_type][$item] : 5000;
-                    $item_total = $price_per_item * $quantity;
+                    if ($order_type === 'Complete Wash') {
+                        $price_per_item = 6000; // price per kg
+                        $item_total = $price_per_item * $quantity;
+                    } else {
+                        $price_per_item = isset($pricing[$order_type][$item]) ? $pricing[$order_type][$item] : 5000;
+                        $item_total = $price_per_item * $quantity;
+                    }
+                    
                     
                     // Add to subtotal
                     $type_subtotal += $item_total;
