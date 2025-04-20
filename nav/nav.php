@@ -2,8 +2,8 @@
 echo "<nav>
         <ul>
             <li><a href='../profile/profile.php'>Profile</a></li>
-            <li><a href='../regular/regular_admin.html'>Regular</a></li>
-            <li><a href='../regular/track.php'>Track</a></li>
+            <li><a href='../regular/track.php'>Progress</a></li>
+            <li><a href='../order/order.php'>Create an order</a></li>
         </ul>
         </nav>
     ";
