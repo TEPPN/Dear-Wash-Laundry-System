@@ -19,10 +19,10 @@ if ($is_admin && isset($_POST['update_status'])) {
     $new_status = $_POST['status'];
     
     // Valid statuses
-    $valid_statuses = ['RECEIVED', 'PROGRESS', 'DONE'];
+    $valid_statuses = ['UNRECEIVED', 'RECEIVED', 'PROGRESS', 'DONE'];
     
     if (in_array($new_status, $valid_statuses)) {
-        $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
+        $stmt = $conn->prepare("UPDATE `order` SET status = ? WHERE order_id = ?");
         $stmt->bind_param("si", $new_status, $order_id);
         $stmt->execute();
         
@@ -33,29 +33,31 @@ if ($is_admin && isset($_POST['update_status'])) {
 }
 
 // Get all orders
-$sql = "SELECT * FROM orders ORDER BY order_id DESC";
+$sql = "SELECT * FROM `order` ORDER BY order_id DESC";
 $result = $conn->query($sql);
 
 // Group orders by status
+$unreceived_orders = [];
 $received_orders = [];
 $progress_orders = [];
 $done_orders = [];
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Decode the JSON order details
         $row['order_details'] = json_decode($row['order_details'], true);
-        
         switch ($row['status']) {
+            case 'UNRECEIVED':
+                $unreceived_orders[] = $row;
+                break;
+            case 'RECEIVED':
+                $received_orders[] = $row;
+                break;
             case 'PROGRESS':
                 $progress_orders[] = $row;
                 break;
             case 'DONE':
                 $done_orders[] = $row;
                 break;
-            default:
-                // If status is not set or is RECEIVED, default to RECEIVED
-                $received_orders[] = $row;
         }
     }
 }
@@ -269,13 +271,22 @@ if ($result && $result->num_rows > 0) {
             </div>
         </div>
 
-        <div class="nav-tabs">
-            <div class="nav-tab" onclick="location.href='index.php'">Home</div>
-            <div class="nav-tab active">Progress</div>
-            <div class="nav-tab" onclick="location.href='create_order.php'">Create an Order</div>
-        </div>
-
         <div class="board">
+            <!-- UNRECEIVED COLUMN -->
+            <div class="column received">
+                <div class="column-header">UNRECEIVED (<?php echo count($unreceived_orders); ?>)</div>
+                <?php foreach ($unreceived_orders as $order): ?>
+                    <div class="card" onclick="showOrderDetails(<?php echo $order['order_id']; ?>, 'UNRECEIVED')">
+                        <div class="card-title">Order #<?php echo $order['order_id']; ?></div>
+                    </div>
+                <?php endforeach; ?>
+                <?php if (count($unreceived_orders) == 0): ?>
+                    <div class="card">
+                        <div class="card-detail">No orders in this section</div>
+                    </div>
+                <?php endif; ?>
+            </div>
+
             <!-- RECEIVED COLUMN -->
             <div class="column received">
                 <div class="column-header">RECEIVED (<?php echo count($received_orders); ?>)</div>
@@ -340,16 +351,18 @@ if ($result && $result->num_rows > 0) {
     <script>
         // Store all orders data in JavaScript
         const allOrders = {
+            UNRECEIVED: <?php echo json_encode($unreceived_orders); ?>,
             RECEIVED: <?php echo json_encode($received_orders); ?>,
             PROGRESS: <?php echo json_encode($progress_orders); ?>,
             DONE: <?php echo json_encode($done_orders); ?>
         };
+
         
         // Function to show order details in a modal
         function showOrderDetails(orderId, status) {
             const orderList = allOrders[status];
             let order = null;
-            
+
             // Find the order with matching ID
             for (let i = 0; i < orderList.length; i++) {
                 if (orderList[i].order_id == orderId) {
@@ -357,46 +370,75 @@ if ($result && $result->num_rows > 0) {
                     break;
                 }
             }
-            
+
             if (!order) return;
-            
+
             // Set modal title
             document.getElementById('modalTitle').textContent = `Order #${order.order_id}`;
-            
-            // Generate content for modal
+
+            // Generate static order info
             let content = `
                 <div class="card-detail">Customer: ${order.customer_name}</div>
-                <div class="card-detail">Date: ${formatDate(order.created_at)}</div>
+                <div class="card-detail">Address: ${order.order_address}</div>
+                <div class="card-detail">Date Received: ${formatDate(order.time_received)}</div>
+                <div class="card-detail">Date Finished: ${formatDate(order.time_finished)}</div>
+                <div class="card-detail"><h4>Order Detail:</h4></div>
             `;
-            
-            // Add order details if available
-            if (order.order_details && order.order_details.details) {
-                order.order_details.details.forEach(detail => {
-                    content += `<div class="service-type">${detail.type}</div>`;
-                    content += `<div class="service-items">`;
-                    
-                    detail.items.forEach(item => {
-                        content += `<div>${item.item} x ${item.quantity} = Rp ${numberFormat(item.item_total)}</div>`;
+
+            // Add dynamic order details
+            const orderDetails = order.order_details || {};
+            let detailHTML = '';
+
+            for (const [type, value] of Object.entries(orderDetails)) {
+                const formattedType = type.replace(/_/g, ' ').toUpperCase();
+                detailHTML += `<div>- ${formattedType}</div><ul>`;
+
+                if (Array.isArray(value)) {
+                    // Handle array of items (like wash_separate)
+                    value.forEach(item => {
+                        const itemName = item.item || 'Item';
+                        const quantity = item.quantity || 0;
+                        const itemTotal = item.item_total ? ` = Rp ${numberFormat(item.item_total)}` : '';
+                        detailHTML += `<li>${itemName} x ${quantity}${itemTotal}</li>`;
                     });
-                    
-                    content += `</div>`;
-                });
-                
-                content += `<div class="total-price">Total: Rp ${numberFormat(order.total_amount)}</div>`;
-            } else {
-                content += `<div class="card-detail">Total: Rp ${numberFormat(order.total_amount)}</div>`;
+                } else if (typeof value === 'object') {
+                    // Handle single object (like complete_wash)
+                    for (const [key, val] of Object.entries(value)) {
+                        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+                        detailHTML += `<li>${formattedKey}: ${val}</li>`;
+                    }
+                }
+
+                detailHTML += `</ul>`;
             }
-            
-            // Add action buttons for admin
-            <?php if ($is_admin): ?>
+
+            if (!detailHTML) {
+                detailHTML = `<p>No order details available.</p>`;
+            }
+
+            content += detailHTML;
+
+            // Add total amount
+            content += `<div class="total-price mt-3">Total: Rp ${numberFormat(order.total_amount)}</div>`;
+
+            // Add admin buttons (PHP-controlled)
+            content += `<?php if ($is_admin): ?>`;
             content += `<div class="modal-actions">`;
-            
-            if (status === "RECEIVED") {
+
+            if (status === "UNRECEIVED") {
+                content += `
+                    <form method="post">
+                        <input type="hidden" name="order_id" value="${order.order_id}">
+                        <input type="hidden" name="status" value="RECEIVED">
+                        <button type="submit" name="update_status" class="move-button">Move to RECEIVED</button>
+                    </form>
+                `;
+            } else if (status === "RECEIVED") {
                 content += `
                     <form method="post">
                         <input type="hidden" name="order_id" value="${order.order_id}">
                         <input type="hidden" name="status" value="PROGRESS">
-                        <button type="submit" name="update_status" class="move-button">Move to Progress</button>
+                        <button type="submit" name="update_status" class="move-button">Move to PROGRESS</button>
                     </form>
                 `;
             } else if (status === "PROGRESS") {
@@ -404,12 +446,12 @@ if ($result && $result->num_rows > 0) {
                     <form method="post">
                         <input type="hidden" name="order_id" value="${order.order_id}">
                         <input type="hidden" name="status" value="RECEIVED">
-                        <button type="submit" name="update_status" class="move-button">Move to Received</button>
+                        <button type="submit" name="update_status" class="move-button">Move to RECEIVED</button>
                     </form>
                     <form method="post">
                         <input type="hidden" name="order_id" value="${order.order_id}">
                         <input type="hidden" name="status" value="DONE">
-                        <button type="submit" name="update_status" class="move-button">Move to Done</button>
+                        <button type="submit" name="update_status" class="move-button">Move to DONE</button>
                     </form>
                 `;
             } else if (status === "DONE") {
@@ -417,19 +459,20 @@ if ($result && $result->num_rows > 0) {
                     <form method="post">
                         <input type="hidden" name="order_id" value="${order.order_id}">
                         <input type="hidden" name="status" value="PROGRESS">
-                        <button type="submit" name="update_status" class="move-button">Move to Progress</button>
+                        <button type="submit" name="update_status" class="move-button">Move to PROGRESS</button>
                     </form>
                 `;
             }
-            
+
             content += `</div>`;
-            <?php endif; ?>
-            
-            // Set content and show modal
+            content += `<?php endif; ?>`;
+
+            // Show in modal
             document.getElementById('modalContent').innerHTML = content;
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('orderModal').style.display = 'block';
         }
+
         
         // Function to close order details modal
         function closeOrderDetails() {

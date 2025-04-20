@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.board {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 10px;
+}
+.column {
+    background-color: #ebecf0;
+    border-radius: 10px;
+    width: 300px;
+    min-width: 300px;
+    padding: 10px;
+    height: fit-content;
+}
+.column-header {
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #172b4d;
+}
+.received .column-header {
+    background-color: #ffeba6;
+    border-radius: 5px;
+}
+.progress .column-header {
+    background-color: #aee5ff;
+    border-radius: 5px;
+}
+.done .column-header {
+    background-color: #c3e6cb;
+    border-radius: 5px;
+}
+.card {
+    background-color: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    cursor: pointer;
+    position: relative;
+}
+.card-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.card-detail {
+    margin-bottom: 5px;
+    color: #5e6c84;
+    font-size: 14px;
+}
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.move-button {
+    background-color: #0079bf;
+    color: white;
+}
+.user-status {
+    margin-left: auto;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* New Floating Window Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.order-modal {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 101;
+    padding: 20px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.close-modal {
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+}
+
+.service-type {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.service-items {
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+.total-price {
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: right;
+    font-size: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
