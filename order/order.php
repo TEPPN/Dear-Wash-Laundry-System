@@ -3,6 +3,6 @@
     include ('../nav/nav.php');
     require_once "../connect/connect.php";
 
-    echo "<a href='regular_order.php'>regular order</a> 
+    echo "<a href='regular/regular.html'>regular order</a> 
           <a href='quick_wash.php'>quick wash</a>";
 ?>
