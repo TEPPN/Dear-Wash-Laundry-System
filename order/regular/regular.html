@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular Order</title>
+</head>
+<body>
+    <form action="regular.php" method="POST">
+        <label>Customer Name:</label>
+        <input type="text" name="customer_name" required>
+        <br><br>
+
+        <div id="complete_wash">
+            <label>
+                <input type="checkbox" id="complete_wash_checkbox" onchange="toggleSection(this, 'complete_wash')">
+                Complete Wash
+            </label><br>
+            <input type="number" name="complete_wash_weight" id="complete_wash_weight" placeholder="Enter weight" disabled><span> Kg</span>
+            <input type="number" name="complete_wash_quantity" placeholder="Enter quantity" disabled><span> Pcs</span>
+        </div>
+        <br>
+
+        <div id="ironing">
+            <label>
+                <input type="checkbox" id="ironing_checkbox" onchange="toggleSection(this, 'ironing')">
+                Ironing
+            </label><br>
+            <input type="number" name="ironing_weight" id="ironing_weight" placeholder="Enter weight" disabled><span> Kg</span>
+            <input type="number" name="ironing_quantity" placeholder="Enter quantity" disabled><span> Pcs</span>
+        </div>
+        <br>
+
+        <div id="bed_sheet">
+            <label>
+                <input type="checkbox" id="bed_sheet_checkbox" onchange="toggleSection(this, 'bed_sheet')">
+                Bed Sheet
+            </label><br>
+            <input type="number" name="bed_sheet_weight" id="bed_sheet_weight" placeholder="Enter weight" disabled><span> Kg</span>
+            <input type="number" name="bed_sheet_quantity" id="bed_sheet_quantity" placeholder="Enter quantity" disabled><span> Pcs</span>
+        </div>
+        <br>
+
+        <div id="bed_cover"></div>
+        <br>
+        <div id="dry_clean"></div>
+        <br>
+        <div id="wash_separate"></div>
+        <br>
+
+        <div id="order_finish" name="finish_time">
+            <label><input type="radio" name="finish_time" value="normal" checked> Normal (3d)</label>
+            <label><input type="radio" name="finish_time" value="plus50"> +50% (2d)</label>
+            <label><input type="radio" name="finish_time" value="plus100"> +100% (1d)</label>
+        </div>
+
+        <br>
+        <div id="order_time"></div>
+        <br>
+        <div id="finish-date">Finish Date: -</div>
+        <br>
+        <div id="total-price">Total Price: Rp 0</div>
+
+        <br>
+        <input type="hidden" name="calculated_total" id="calculated_total">
+        <input type="submit" value="Submit Order">
+    </form>
+
+    <script src="regular.js"></script>
+</body>
+</html>
