@@ -73,6 +73,9 @@ if ($result && $result->num_rows > 0) {
 </head>
 <body>
     <div class="container">
+    <div>
+         <a href="../profile/profile.php">Back</a>
+     </div>
         <div class="header">
             <h1>Laundry Tracking System</h1>
             <div class="user-status">
@@ -82,6 +85,7 @@ if ($result && $result->num_rows > 0) {
                     <span>Logged in as User</span>
                 <?php endif; ?>
             </div>
+            
         </div>
 
         <div class="board">
