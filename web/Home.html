@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DearWash - Layanan laundry terbaik dengan kualitas terjamin">
+    <link rel="stylesheet" href="styleshome.css">
+    <title>Laundry DearWash - Layanan Cuci Kering & Setrika</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="img/logo.png" alt="DearWash Logo">
+        </div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav" id="main-nav">
+            <ul>
+                <li class="active"><a href="#" aria-current="page">HOME</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#price-section">Price</a></li>
+                <li><a href="#">Progres</a></li>
+                <li><a href="#">Create An Order</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>LAUNDRY<span>DearWash</span></h1>
+                <p>Selamat datang di Laundry Cuci Kering Kelompok Arisu</p>
+                <p>yang sangat wah, dijamin wangi muach</p>
+                <p>muach aww</p>
+                <a href="#" class="cta-button">Go To Order →</a>
+            </div>
+            <div class="hero-image">
+                <img src="img/laundry1.png" alt="Laundry Illustration">
+            </div>
+        </section>
+        
+        <section class="services-section">
+            <div class="container">
+                <h2>BELIEVE YOUR CLOTHES</h2>
+                <p>Percayakan pakaian kamu pada kami, dengan website ini, kemudahan menanti didepan mata, kualitas terjamin</p>
+                
+                <div class="services-container">
+                    <div class="service">
+                        <div class="service-icon">
+                            <img src="img/wewash.png" alt="Wash Icon">
+                        </div>
+                        <h3>We Wash</h3>
+                    </div>
+                    
+                    <div class="service">
+                        <div class="service-icon">
+                            <img src="img/wedry.png" alt="Dry Icon">
+                        </div>
+                        <h3>We Dry</h3>
+                    </div>
+                    
+                    <div class="service">
+                        <div class="service-icon">
+                            <img src="img/wedeliver.png" alt="Deliver Icon">
+                        </div>
+                        <h3>We Deliver</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="price-section" id="price-section">
+            <h2>PRICE LIST</h2>
+            
+            <div class="price-table">
+                <div class="price-header"></div>
+                <div class="price-row">
+                    <div class="price-item">1. Complete Wash (Cuci Kering + Setrika)</div>
+                    <div class="price-value">6k/kg</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">2. Bed Cover (Sprei + Sarung Bantal)</div>
+                    <div class="price-value">7k/kg</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">3. Ironing atau Setrika saja (Segala Jenis)</div>
+                    <div class="price-value">4k/kg</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">4. Pakaian Express (Siap dalam 5 jam)</div>
+                    <div class="price-value">10k/kg</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">5. Sepatu (Dicuci dan Dikeringkan)</div>
+                    <div class="price-value">15k/pasang</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">6. Selimut Tebal</div>
+                    <div class="price-value">12k/pc</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">7. Dry Clean (Jaket/Jas)</div>
+                    <div class="price-value">20k/pc</div>
+                </div>
+                <!-- Keeping some placeholders for future prices -->
+                <div class="price-row">
+                    <div class="price-item">8. Karpet Kecil (< 2m²)</div>
+                    <div class="price-value">25k/pc</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">9. Karpet Besar (> 2m²)</div>
+                    <div class="price-value">40k/pc</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">10. Pakaian Premium</div>
+                    <div class="price-value">9k/kg</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Contact Us :</p>
+        <p>+62 838 0095 3199 | <a href="mailto:laundrywash@gmail.com">laundrywash@gmail.com</a> | <a href="https://www.laundrywash.com" target="_blank">www.laundrywash.com</a></p>
+    </footer>
+    
+    <button class="scroll-top" id="scroll-to-top" aria-label="Scroll to top">↑</button>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('mobile-menu');
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+        
+        // Scroll to top button
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopButton.classList.add('visible');
+            } else {
+                scrollToTopButton.classList.remove('visible');
+            }
+        });
+        
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
