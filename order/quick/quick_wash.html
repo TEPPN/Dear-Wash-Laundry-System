@@ -4,54 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Wash</title>
+    <link rel="stylesheet" href="quick_wash.css">
 </head>
 <body>
-    <div>
-        <a href="../order.php">Back</a>
-    </div>
     <form action="quick_wash.php" method="post">
-        <label for="customer_name">Customer Name</label>
-        <input type="text" name="customer_name" id="customer_name" required>
-        <br>
-        <label for="customer_address">Customer Address</label>
-        <input type="text" name="customer_address" id="customer_address" default="">
-        <br><br>
-        <div id="wash_only">
-            <label>
-                <input type="checkbox" id="wash_only_checkbox" onchange="toggleSection(this, 'wash_only')">
-                Wash Only
-            </label><br>
-            <input type="number" name="wash_only_weight" id="wash_only_weight" placeholder="Enter weight" disabled><span> Kg</span>
+        <div class="header">
+            <img src="../../img/logo.png" alt="Quick Wash Logo">
         </div>
-        <br>
-
-        <div id="wash_dry">
-            <label>
-                <input type="checkbox" id="wash_dry_checkbox" onchange="toggleSection(this, 'wash_dry')">
-                Wash & Dry
-            </label><br>
-            <input type="number" name="wash_dry_weight" id="wash_dry_weight" placeholder="Enter weight" disabled><span> Kg</span>
+        
+        <div class="form-group">
+            <label for="customer_name">Customer Name/Id</label>
+            <input type="text" name="customer_name" id="customer_name" placeholder="Username or Email" required>
         </div>
-        <br>
-
-        <div id="wash_fold">
-            <label>
-                <input type="checkbox" id="wash_fold_checkbox" onchange="toggleSection(this, 'wash_fold')">
-                Wash & Fold
-            </label><br>
-            <input type="number" name="wash_fold_weight" id="wash_fold_weight" placeholder="Enter weight" disabled><span> Kg</span>
+        
+        <div class="form-group">
+            <label for="customer_address">Customer Address</label>
+            <input type="text" name="customer_address" id="customer_address" placeholder="Enter Your Address">
         </div>
-        <br>
-        <div id="order_time"></div>
-        <br>
-        <div id="finish-date">Finish Date: -</div>
-        <br>
-        <div id="total-price">Total Price: Rp 0</div>
+        
+        <div class="services-container">
+            <div class="service-option" id="wash_only">
+                <input type="checkbox" id="wash_only_checkbox" class="service-checkbox" onchange="toggleSection(this, 'wash_only')">
+                <label for="wash_only_checkbox" class="service-label">
+                    <span class="checkbox-custom"></span>
+                    <span class="service-title">Wash Only</span>
+                </label>
+                <div class="weight-input">
+                    <input type="number" name="wash_only_weight" id="wash_only_weight" placeholder="Enter weight" disabled><span> Kg</span>
+                </div>
+            </div>
 
-        <br>
+            <div class="service-option" id="wash_dry">
+                <input type="checkbox" id="wash_dry_checkbox" class="service-checkbox" onchange="toggleSection(this, 'wash_dry')">
+                <label for="wash_dry_checkbox" class="service-label">
+                    <span class="checkbox-custom"></span>
+                    <span class="service-title">Wash & Dry</span>
+                </label>
+                <div class="weight-input">
+                    <input type="number" name="wash_dry_weight" id="wash_dry_weight" placeholder="Enter weight" disabled><span> Kg</span>
+                </div>
+            </div>
+
+            <div class="service-option" id="wash_fold">
+                <input type="checkbox" id="wash_fold_checkbox" class="service-checkbox" onchange="toggleSection(this, 'wash_fold')">
+                <label for="wash_fold_checkbox" class="service-label">
+                    <span class="checkbox-custom"></span>
+                    <span class="service-title">Wash & Fold</span>
+                </label>
+                <div class="weight-input">
+                    <input type="number" name="wash_fold_weight" id="wash_fold_weight" placeholder="Enter weight" disabled><span> Kg</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="order-details">
+            <div class="detail-item" id="order_time">Order Time: 27/4/2025, 03:21:42</div>
+            <div class="detail-item" id="finish-date">Finish Time: 27/4/2025, 08:21:42</div>
+            <div class="detail-item" id="total-price">Total Price: Rp 0</div>
+        </div>
+
         <input type="hidden" name="calculated_total" id="calculated_total">
-        <input type="submit" value="Submit Order">
+        <div class="buttons-container">
+            <a href="../order.php" class="back-btn">Back</a>
+            <button type="submit" class="submit-btn">Submit Order</button>
+        </div>
     </form>
+    
     <script src="quick_wash.js"></script>
 </body>
 </html>

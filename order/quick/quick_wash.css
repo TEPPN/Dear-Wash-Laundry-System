@@ -1,0 +1,228 @@
+/* Quick Wash */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #e5f6f8;
+    min-height: 100vh;
+    display: flex;
+    /* Mengubah justify-content dari center menjadi flex-start untuk memindahkan konten ke kiri */
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    background-image: url('../../img/background.png');
+    background-size: cover;
+    background-position: center;
+}
+
+form {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    /* Menambahkan margin-left untuk memberikan jarak dari tepi kiri */
+    margin-left: 3.3%;
+}
+
+.back-btn {
+    font-family: system-ui, -apple-system, Roboto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #414141;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    flex-grow: 1;
+}
+
+.back-btn:hover {
+    background-color: #242424;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.header img {
+    width: 70px;
+    margin-bottom: 0px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-family: system-ui, -apple-system, Roboto;
+    display: block;
+    margin-bottom: 6px;
+    color: #000000;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #0055cc;
+    outline: none;
+}
+
+.services-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.service-option {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 15px;
+    width: calc(33.33% - 7px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.service-checkbox {
+    display: none;
+}
+
+.service-label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+}
+
+.service-checkbox:checked + .service-label .checkbox-custom::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 5px;
+    height: 10px;
+    border: solid #0055cc;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.service-title {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+    margin: 0;
+    text-align: left;
+}
+
+.weight-input {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.weight-input input {
+    width: calc(100% - 30px);
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.weight-input span {
+    margin-left: 5px;
+    color: #666;
+}
+
+.order-details {
+    text-align: center;
+    background-color: rgba(225, 245, 250, 0.7);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.detail-item {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #444;
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.submit-btn {
+    font-family: system-ui, -apple-system, Roboto;
+    background-color: #0051BA;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    flex-grow: 1;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #004099;
+}
+
+@media (max-width: 768px) {
+    .services-container {
+        flex-direction: column;
+    }
+    
+    .service-option {
+        width: 100%;
+    }
+    
+    /* Untuk perangkat mobile, tetap berikan sedikit margin */
+    form {
+        margin-left: 0;
+    }
+}

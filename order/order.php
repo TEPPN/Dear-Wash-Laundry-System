@@ -41,7 +41,7 @@ require_once "../connect/connect.php";
                 </div>
                 <h2>Quick Wash & Dry</h2>
                 <p>take 1 day but doesn't give the best result and only accept regular clothes, best for laundry in bulk</p>
-                <a href="quick/quick_wash.html" class="service-link">Select</a>
+                <a href="./quick/quick_wash.html" class="service-link">Select</a>
             </div>
 
             <div class="service-card regular-order">
