@@ -1,0 +1,232 @@
+:root {
+    --primary-color: #1565C0;
+    --secondary-color: #2196F3;
+    --accent-color: #FF4081;
+    --white: #ffffff;
+    --light-gray: #f5f5f5;
+    --text-gray: #757575;
+    --dark-blue: #0D47A1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo img {
+    height: 55px;
+    transition: height 0.3s ease;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+nav li.active a {
+    color: var(--primary-color);
+    background-color: var(--white);
+    border: 1px solid var(--dark-blue);
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-gray);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+    background-color: var(--light-gray);
+    transform: translateY(-2px);
+}
+
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* Main Content Styles */
+.order-container {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+    position: relative;
+    min-height: calc(100vh - 140px); /* Account for header height and margin */
+    overflow: hidden;
+}
+
+.service-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.service-card {
+    flex: 1;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background-color: #2196F3; /* Lighter blue color */
+    opacity: 0.9; /* Slight transparency */
+}
+
+.service-icon {
+    margin-bottom: 20px;
+}
+
+.service-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+.service-card h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.service-card p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.service-link {
+    display: inline-block;
+    color: var(--primary-color);
+    background-color: var(--white);
+    padding: 10px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.service-link:hover {
+    background-color: var(--light-gray);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.laundry-illustration {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    text-align: right;
+    pointer-events: none;
+}
+
+.laundry-illustration img {
+    width: auto;
+    height: auto;
+    max-width: 80%;
+    max-height: 75vh;
+    display: block;
+    margin-left: auto;
+    
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+    
+    .logo img {
+        height: 45px;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    nav {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background-color: var(--white);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        display: none;
+    }
+    
+    nav.active {
+        display: block;
+    }
+    
+    nav ul {
+        flex-direction: column;
+    }
+    
+    nav li {
+        margin: 10px 0;
+    }
+    
+    .service-options {
+        flex-direction: column;
+    }
+    
+    .laundry-illustration {
+        position: relative;
+        bottom: 0;
+    }
+}
