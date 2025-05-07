@@ -31,7 +31,7 @@ $pageTitle = "Laundry DearWash - Layanan Cuci Kering & Setrika";
                 <li><a href="../profile/profile.php">Profile</a></li>
                 <li><a href="#price-section">Price</a></li>
                 <li><a href="progress.php">Progres</a></li>
-                <li><a href="create_order.php">Create An Order</a></li>
+                <li><a href="../order/order.php">Create An Order</a></li>
             </ul>
         </nav>
     </header>
