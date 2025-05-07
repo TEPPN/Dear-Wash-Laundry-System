@@ -1,21 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign-up</title>
+    <title>BEAR WASH - Sign-up</title>
+    <link rel="stylesheet" href="style.css"> <!-- Sesuaikan path jika perlu -->
 </head>
 <body>
-    <form action="sign_up.php" method='POST'>
-        <h3>Sign-up</h3>
-        <label for="username">Username: </label> <br>
-        <input type="text" name="username" required><br>
-        <label for="email">Email: </label> <br>
-        <input type="email" name="email" required><br>
-        <label for="password">Password: </label> <br>
-        <input type="password" name="password" required><br>
-        <button type="submit" id="sign_up">Sign-up</button>
-    </form>
-    <p>Already have account? <b><a href="../sign-in/sign_in.html">Sign-up</a></b></p>
+    <div class="container">
+        <div class="auth-container">
+            <div class="logo">
+                <div class="logo-img"></div>
+            </div>
+
+            <form action="sign_up.php" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                </div>
+
+                <button type="submit" class="btn">Sign-up</button>
+
+                <div class="signup-text">
+                    Already have an account?
+                    <a href="../sign-in/sign_in.html">Sign-in</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

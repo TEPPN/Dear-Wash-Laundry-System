@@ -1,0 +1,144 @@
+/* Reset dan pengaturan dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-image: url('../img/background.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Container utama */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 20px;
+}
+
+/* Container form autentikasi */
+.auth-container {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 28px;
+    width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.logo-img {
+    background-image: url('../img/logo.png');
+    background-size: cover;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 0px;
+}
+
+/* Elemen form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-family: system-ui, -apple-system, Roboto;
+    display: block;
+    margin-bottom: 5px;
+    color: #000000;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #0066cc;
+}
+
+/* Tombol */
+.btn {
+    margin-top: 5px;
+    width: 100%;
+    padding: 12px;
+    background-color: #0051BA;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: system-ui, -apple-system, Roboto;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #004d99;
+}
+
+/* Teks pendaftaran */
+.signup-text {
+    font-family: system-ui, -apple-system, Roboto;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+.signup-text a {
+    font-family: system-ui, -apple-system, Roboto;
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 1px;
+}
+
+/* Media queries untuk responsif */
+@media (max-width: 768px) {
+    .auth-container {
+        width: 100%;
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 20px;
+    }
+    
+    .form-control {
+        padding: 10px;
+    }
+    
+    .btn {
+        padding: 10px;
+    }
+}
