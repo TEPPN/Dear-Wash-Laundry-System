@@ -391,6 +391,55 @@ nav a:hover {
     flex: 1;
 }
 
+.expandable-row {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.expandable-row:hover {
+    background-color: rgba(135, 180, 216, 0.1);
+}
+
+.expand-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    margin-left: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    display: none;
+    background-color: var(--light-gray);
+}
+
+.sub-item {
+    padding-left: 30px;
+    border-left: 3px solid var(--primary-color);
+    background-color: rgba(135, 180, 216, 0.05);
+}
+
+.sub-item:hover {
+    background-color: rgba(135, 180, 216, 0.1);
+}
+
+.sub-item .price-item {
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+
 /* Footer */
 footer {
     background-color: var(--dark-blue);
@@ -601,12 +650,38 @@ footer a:hover {
         text-align: center;
         padding: 10px;
     }
+    
+    .expand-icon {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
+    }
+    
+    .sub-item {
+        padding-left: 20px;
+    }
 }
 
 /* Responsive Design - Mobile */
 @media (max-width: 480px) {
     header {
         padding: 10px;
+    }
+
+    .expand-icon {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        font-size: 10px;
+    }
+    
+    .sub-item {
+        padding-left: 15px;
+    }
+    
+    .sub-item .price-item {
+        font-size: 13px;
     }
     
     .logo img {

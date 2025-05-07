@@ -43,7 +43,7 @@ $pageTitle = "Laundry DearWash - Layanan Cuci Kering & Setrika";
                 <p>Selamat datang di Laundry Cuci Kering Kelompok Arisu</p>
                 <p>yang sangat wah, dijamin wangi muach</p>
                 <p>muach aww</p>
-                <a href="create_order.php" class="cta-button">Go To Order →</a>
+                <a href="../order/order.php" class="cta-button">Go To Order →</a>
             </div>
             <div class="hero-image">
                 <img src="../img/laundry1.png" alt="Laundry Illustration">
@@ -83,31 +83,88 @@ $pageTitle = "Laundry DearWash - Layanan Cuci Kering & Setrika";
         <section class="price-section" id="price-section">
             <h2>PRICE LIST</h2>
             
-            <?php
-            // Anda bisa mengambil data harga dari database jika diperlukan
-            $priceList = [
-                ['id' => 1, 'name' => 'Complete Wash (Cuci Kering + Setrika)', 'price' => '6k/kg'],
-                ['id' => 2, 'name' => 'Bed Cover (Sprei + Sarung Bantal)', 'price' => '7k/kg'],
-                ['id' => 3, 'name' => 'Ironing atau Setrika saja (Segala Jenis)', 'price' => '4k/kg'],
-                ['id' => 4, 'name' => 'Pakaian Express (Siap dalam 5 jam)', 'price' => '10k/kg'],
-                ['id' => 5, 'name' => 'Sepatu (Dicuci dan Dikeringkan)', 'price' => '15k/pasang'],
-                ['id' => 6, 'name' => 'Selimut Tebal', 'price' => '12k/pc'],
-                ['id' => 7, 'name' => 'Dry Clean (Jaket/Jas)', 'price' => '20k/pc'],
-                ['id' => 8, 'name' => 'Karpet Kecil (< 2m²)', 'price' => '25k/pc'],
-                ['id' => 9, 'name' => 'Karpet Besar (> 2m²)', 'price' => '40k/pc'],
-                ['id' => 10, 'name' => 'Pakaian Premium', 'price' => '19k/kg']
-            ];
-            ?>
-            
             <div class="price-table">
                 <div class="price-header"></div>
                 
-                <?php foreach($priceList as $item): ?>
+                <!-- Regular price items 1-3 -->
                 <div class="price-row">
-                    <div class="price-item"><?php echo $item['id'] . '. ' . $item['name']; ?></div>
-                    <div class="price-value"><?php echo $item['price']; ?></div>
+                    <div class="price-item">1. Complete Wash (Cuci Kering + Setrika)</div>
+                    <div class="price-value">6k/kg</div>
                 </div>
-                <?php endforeach; ?>
+                <div class="price-row">
+                    <div class="price-item">2. Bed Sheet (Sprei + Sarung Bantal)</div>
+                    <div class="price-value">7k/kg</div>
+                </div>
+                <div class="price-row">
+                    <div class="price-item">3. Ironing atau Setrika saja (Segala Jenis)</div>
+                    <div class="price-value">4k/kg</div>
+                </div>
+                
+                <!-- Expandable price items 4-6 -->
+                <div class="price-row expandable-row" onclick="toggleExpandable('premium-services')">
+                    <div class="price-item">4. Dry Cleaning <span class="expand-icon">+</span></div>
+                    <div class="price-value"></div>
+                </div>
+                <div id="premium-services" class="expandable-content">
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Suit</div>
+                        <div class="price-value">20k/kg</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Suit Pants</div>
+                        <div class="price-value">10k/kg</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Suits</div>
+                        <div class="price-value">30k/kg</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Dress</div>
+                        <div class="price-value">30k/kg</div>
+                    </div>
+                </div>
+                
+                <div class="price-row expandable-row" onclick="toggleExpandable('express-services')">
+                    <div class="price-item">5. Bed Cover <span class="expand-icon">+</span></div>
+                    <div class="price-value"></div>
+                </div>
+                <div id="express-services" class="expandable-content">
+                    <div class="price-row sub-item">
+                        <div class="price-item">• S</div>
+                        <div class="price-value">20k/pc</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• M</div>
+                        <div class="price-value">25k/pc</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• L</div>
+                        <div class="price-value">30k/pc</div>
+                    </div>
+                </div>
+                
+                <div class="price-row expandable-row" onclick="toggleExpandable('special-items')">
+                    <div class="price-item">6. Wash Seperate <span class="expand-icon">+</span></div>
+                    <div class="price-value"></div>
+                </div>
+                <div id="special-items" class="expandable-content">
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Underwear</div>
+                        <div class="price-value">2k/pc</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Sock</div>
+                        <div class="price-value">2k/pc</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Towel</div>
+                        <div class="price-value">10k/pc</div>
+                    </div>
+                    <div class="price-row sub-item">
+                        <div class="price-item">• Jacket</div>
+                        <div class="price-value">5k/pc</div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -143,6 +200,28 @@ $pageTitle = "Laundry DearWash - Layanan Cuci Kering & Setrika";
                 behavior: 'smooth'
             });
         });
+        
+        // Toggle expandable price list items
+        function toggleExpandable(id) {
+            const content = document.getElementById(id);
+            const expandIcon = event.currentTarget.querySelector('.expand-icon');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.opacity = "0";
+                expandIcon.textContent = "+";
+                setTimeout(() => {
+                    content.style.display = "none";
+                }, 300);
+            } else {
+                content.style.display = "block";
+                setTimeout(() => {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.style.opacity = "1";
+                    expandIcon.textContent = "-";
+                }, 10);
+            }
+        }
     </script>
 </body>
 </html>
