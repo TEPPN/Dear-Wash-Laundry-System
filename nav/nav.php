@@ -6,5 +6,5 @@ echo "<nav>
             <li><a href='../order/order.php'>Create an order</a></li>
         </ul>
         </nav>
-    ";
+    "
 ?>
