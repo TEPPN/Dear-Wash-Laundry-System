@@ -43,7 +43,7 @@
                 </div>
                 <div class="profile-info">
                     <h1 class="user-name"><?php echo $user_name; ?></h1>
-                    <p class="user-id">User id</p>
+                    <p class="user-id"><?php echo $user_id; ?></p>
                     
                     <div class="user-description">
                         Deskripsi User
