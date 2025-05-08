@@ -25,11 +25,11 @@
         </div>
         <nav class="nav" id="main-nav">
             <ul>
-                <li><a href="#">HOME</a></li>
-                <li class="active"><a href="logsign.php" aria-current="page">Profile</a></li>
-                <li><a href="#price-section">Price</a></li>
+                <li><a href="../landing-page/landing_page.php">HOME</a></li>
+                <li class="active"><a href="profile.php" aria-current="page">Profile</a></li>
+                <li><a href="../landing-page/landing_page.php">Price</a></li>
                 <li><a href="progress.php">Progres</a></li>
-                <li><a href="create_order.php">Create An Order</a></li>
+                <li><a href="../order/order.php">Create An Order</a></li>
             </ul>
         </nav>
     </header>
