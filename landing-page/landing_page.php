@@ -108,19 +108,19 @@ $pageTitle = "Laundry DearWash - Layanan Cuci Kering & Setrika";
                 <div id="premium-services" class="expandable-content">
                     <div class="price-row sub-item">
                         <div class="price-item">• Suit</div>
-                        <div class="price-value">20k/kg</div>
+                        <div class="price-value">20k/pc</div>
                     </div>
                     <div class="price-row sub-item">
                         <div class="price-item">• Suit Pants</div>
-                        <div class="price-value">10k/kg</div>
+                        <div class="price-value">10k/pc</div>
                     </div>
                     <div class="price-row sub-item">
                         <div class="price-item">• Suits</div>
-                        <div class="price-value">30k/kg</div>
+                        <div class="price-value">30k/pc</div>
                     </div>
                     <div class="price-row sub-item">
                         <div class="price-item">• Dress</div>
-                        <div class="price-value">30k/kg</div>
+                        <div class="price-value">30k/pc</div>
                     </div>
                 </div>
                 
