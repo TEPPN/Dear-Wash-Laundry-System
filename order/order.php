@@ -27,7 +27,7 @@ require_once "../connect/connect.php";
                 <li><a href="../landing-page/landing_page.php">HOME</a></li>
                 <li><a href="../profile/profile.php">Profile</a></li>
                 <li><a href="#price-section">Price</a></li>
-                <li><a href="../track.php">Progres</a></li>
+                <li><a href="../track/track.php">Progres</a></li>
                 <li class="active"><a href="../order/order.php" aria-current="page">Create An Order</a></li>
             </ul>
         </nav>
